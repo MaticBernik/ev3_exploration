@@ -13,7 +13,7 @@ class RoboServer:
                
     def check_if_recipient(self,msg):
         if msg.startswith('['):
-            recipient_list=msg[msg.index('[')+1:msg.index(']')]
+            recipient_list=msg[msg.index('[')+1:msg.payload.index(']')]
             if ',' in recipient_list:
                 recipient_list = recipient_list.split(',')
             else:
@@ -28,7 +28,7 @@ class RoboServer:
     
     def callback_junction(self,client, userdata, msg):
         #Ofc note the client who is sending the junction message..
-        content = msg.split()
+        content = msg.payload.split()
         if content[0]=='turn':
             #direction contains 'L' for left turn and 'R' for right turn
             direction = content[0]
@@ -36,7 +36,7 @@ class RoboServer:
             #robot got to the next crossection.
             #Following are the leters denoting possible directions 'L','F','R'
             paths = content[1:]
-        elif msg.startswith('endOfTheLine'):
+        elif msg.payload.startswith('endOfTheLine'):
             #self explanatory I think
             pass
         else:
