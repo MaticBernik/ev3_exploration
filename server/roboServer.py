@@ -61,7 +61,8 @@ class RoboServer:
         #And responds to those agents that they have been successfully registered 
         if client not in self.ROBOTS_COMMUNICATION:
             self.ROBOTS_COMMUNICATION.append(client)
-        self.client.publish('')    
+        self.client.publish('[',client,'] registred')    
+    
         
     def callback_instruction(self,client,userdata,msg):
         pass
@@ -72,13 +73,14 @@ class RoboServer:
                               #of directions at each consequtive crossection
         self.CROSSECTIONS = {} #dictionary of dictionaryes of distionaryes of...
         self.client = mqtt.Client()
-        self.client.connect("localhost",1883,60)
+        self.client.connect(broker_address,1883,60)
         print("***Connection to message broker server established!")
         self.client.on_connect = self.on_connect
         self.client.message_callback_add("junction",self.callback_junction)
         self.client.message_callback_add("colision",self.callback_colision)
         self.client.message_callback_add("goal",self.callback_goal)
         self.client.message_callback_add("instruction",self.callback_instruction)
+        self.client.message_callback_add("connection",self.callback_connection)
         self.client.loop_forever()
         self.client.disconnect()
         
